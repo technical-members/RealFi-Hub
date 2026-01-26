@@ -52,8 +52,16 @@ const Notes = () => {
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  // Form for creating/updating notes
-  const noteForm = useForm<NoteFormData>({
+  // Form for creating notes
+  const createNoteForm = useForm<NoteFormData>({
+    defaultValues: {
+      title: "",
+      content: "",
+    },
+  });
+
+  // Form for updating notes
+  const updateNoteForm = useForm<NoteFormData>({
     defaultValues: {
       title: "",
       content: "",
@@ -99,7 +107,8 @@ const Notes = () => {
       }
       const noteData = await response.json();
       setSelectedNote(noteData);
-      noteForm.reset({
+      // Only update the update form, not the create form
+      updateNoteForm.reset({
         title: noteData.title,
         content: noteData.content,
       });
@@ -130,7 +139,11 @@ const Notes = () => {
       const createdNote = await response.json();
       console.log("Created note:", createdNote);
       showMessage("success", "Note created successfully");
-      noteForm.reset();
+      // Clear only the create form
+      createNoteForm.reset({
+        title: "",
+        content: "",
+      });
       fetchAllNotes();
     } catch (error: any) {
       console.error("Error creating note:", error);
@@ -163,6 +176,11 @@ const Notes = () => {
       console.log("Updated note:", result);
       showMessage("success", `Note ${noteId} updated successfully`);
       setSelectedNote(result.note);
+      // Update the update form with the new data
+      updateNoteForm.reset({
+        title: result.note.title,
+        content: result.note.content,
+      });
       fetchAllNotes();
     } catch (error: any) {
       console.error("Error updating note:", error);
@@ -191,7 +209,10 @@ const Notes = () => {
       console.log("Deleted note:", data);
       showMessage("success", `Note ${noteId} deleted successfully`);
       noteIdForm.reset();
-      noteForm.reset();
+      updateNoteForm.reset({
+        title: "",
+        content: "",
+      });
       setSelectedNote(null);
       fetchAllNotes();
     } catch (error: any) {
@@ -226,10 +247,10 @@ const Notes = () => {
             <CardDescription>Add a new note to the system</CardDescription>
           </CardHeader>
           <CardContent>
-            <Form {...noteForm}>
-              <form onSubmit={noteForm.handleSubmit(createNote)} className="space-y-4">
+            <Form {...createNoteForm}>
+              <form onSubmit={createNoteForm.handleSubmit(createNote)} className="space-y-4">
                 <FormField
-                  control={noteForm.control}
+                  control={createNoteForm.control}
                   name="title"
                   rules={{ required: "Title is required", minLength: { value: 1, message: "Title cannot be empty" } }}
                   render={({ field }) => (
@@ -243,7 +264,7 @@ const Notes = () => {
                   )}
                 />
                 <FormField
-                  control={noteForm.control}
+                  control={createNoteForm.control}
                   name="content"
                   rules={{ required: "Content is required", minLength: { value: 1, message: "Content cannot be empty" } }}
                   render={({ field }) => (
@@ -323,10 +344,10 @@ const Notes = () => {
                     <CardDescription>Edit the selected note</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <Form {...noteForm}>
-                      <form onSubmit={noteForm.handleSubmit(updateNote)} className="space-y-4">
+                    <Form {...updateNoteForm}>
+                      <form onSubmit={updateNoteForm.handleSubmit(updateNote)} className="space-y-4">
                         <FormField
-                          control={noteForm.control}
+                          control={updateNoteForm.control}
                           name="title"
                           rules={{ required: "Title is required" }}
                           render={({ field }) => (
@@ -340,7 +361,7 @@ const Notes = () => {
                           )}
                         />
                         <FormField
-                          control={noteForm.control}
+                          control={updateNoteForm.control}
                           name="content"
                           rules={{ required: "Content is required" }}
                           render={({ field }) => (
@@ -417,7 +438,8 @@ const Notes = () => {
                   onClick={() => {
                     noteIdForm.setValue("noteId", note.id.toString());
                     setSelectedNote(note);
-                    noteForm.reset({
+                    // Only update the update form, not the create form
+                    updateNoteForm.reset({
                       title: note.title,
                       content: note.content,
                     });
