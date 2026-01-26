@@ -9,6 +9,7 @@ import Marketplace from "./pages/Marketplace";
 import Dashboard from "./pages/Dashboard";
 import Investors from "./pages/Investors";
 import Admin from "./pages/Admin";
+import Notes from "./pages/Notes";
 import NotFound from "./pages/NotFound";
 
 const App = () => (
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/investors" element={<Investors />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/notes" element={<Notes />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
