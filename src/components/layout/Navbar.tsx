@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   Users,
   Shield,
+  FileText,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { WalletButton } from "@/components/wallet/WalletButton";
@@ -17,6 +18,7 @@ const navLinks = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Investors", href: "/investors", icon: Users },
   { name: "Admin", href: "/admin", icon: Shield },
+  { name: "Notes", href: "/notes", icon: FileText },
 ];
 
 export function Navbar() {
